@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "@mercadopago/sdk-react": "^0.0.21",
+    "@prisma/client": "^6.2.1",
+    "@radix-ui/react-tabs": "^1.1.2",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "mercadopago": "^2.2.0"
+  },
+  "devDependencies": {
+    "prisma": "^6.2.1"
+  }
+}

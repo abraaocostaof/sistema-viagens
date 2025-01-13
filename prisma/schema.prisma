@@ -1,0 +1,96 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   @default("user") // user, admin, driver
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  bookings  Booking[]
+}
+
+model Driver {
+  id           Int      @id @default(autoincrement())
+  name         String
+  cpf          String   @unique
+  phone        String
+  address      String
+  cnh          String   @unique
+  renavam      String   @unique
+  licensePlate String   @unique
+  vehicleType  String
+  vehicleImage String?
+  driverImage  String?
+  company      String
+  login        String   @unique
+  password     String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  trips        Trip[]
+}
+
+model Route {
+  id          Int      @id @default(autoincrement())
+  origin      String
+  destination String
+  duration    String
+  distance    String
+  basePrice   Float
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  trips       Trip[]
+}
+
+model Trip {
+  id           Int      @id @default(autoincrement())
+  routeId      Int
+  driverId     Int
+  departureTime DateTime
+  arrivalTime  DateTime
+  status       String   @default("scheduled") // scheduled, in_progress, completed, cancelled
+  totalSeats   Int
+  price        Float
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  route        Route    @relation(fields: [routeId], references: [id])
+  driver       Driver   @relation(fields: [driverId], references: [id])
+  bookings     Booking[]
+}
+
+model Booking {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  tripId     Int
+  seatNumber String
+  status     String   @default("pending") // pending, confirmed, cancelled
+  totalPrice Float
+  paymentMethod String?
+  paymentStatus String   @default("pending")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  user       User     @relation(fields: [userId], references: [id])
+  trip       Trip     @relation(fields: [tripId], references: [id])
+}
+
+model Coupon {
+  id          Int      @id @default(autoincrement())
+  code        String   @unique
+  discount    Float
+  type        String   // percentage, fixed
+  validFrom   DateTime
+  validUntil  DateTime
+  usageLimit  Int
+  usageCount  Int      @default(0)
+  minValue    Float?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
