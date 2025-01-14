@@ -1,12 +1,16 @@
 import { NextResponse } from 'next/server';
 import mercadopago from 'mercadopago';
 
-mercadopago.configure({
-  access_token: process.env.MERCADOPAGO_ACCESS_TOKEN
-});
+// Ajuste na configuração do MercadoPago
+const mercadoPagoConfig = () => {
+  mercadopago.configurations.setAccessToken(process.env.MERCADOPAGO_ACCESS_TOKEN);
+};
 
 export async function POST(request) {
   try {
+    // Configura o MercadoPago antes de usar
+    mercadoPagoConfig();
+
     const data = await request.json();
 
     const paymentData = {
