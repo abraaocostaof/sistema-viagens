@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Remova a linha output: 'export'
+  // Remova output: 'export' pois a Vercel gerencia isso automaticamente
   async headers() {
     return [
       {
@@ -29,4 +29,4 @@ const nextConfig = {
   },
 };
 
-export default nextConfig;
+export default nextConfig;  
